@@ -1,0 +1,25 @@
+<!DOCTYPE module SYSTEM "module.dtd">
+
+<module name="gps_parrot" dir="gps_parrot">
+  <doc>
+    <description>
+      Parrot GPS autoconfiguration.
+
+      Automatically configure Parrot GPS for paparazzi.
+
+      -automaticaly set baudrate to 57600
+      -switch to SiRF Binary
+      -configures the GPS to be in 5Hz mode
+
+    </description>
+  </doc>
+  <header>
+    <file name="gps_parrot.h"/>
+  </header>
+  <init fun="gps_parrot_init()"/>
+  <makefile target="ap">
+    <file name="gps_parrot.c" />
+  </makefile>
+</module>
+
+

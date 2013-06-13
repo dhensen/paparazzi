@@ -30,6 +30,9 @@
   </firmware>
 
   <!-- <modules main_freq="512"> <load name="sys_mon.xml" /> </modules> -->
+  <modules>
+    <load name="gps_parrot.xml" />
+  </modules>
 
   <commands>
     <axis name="PITCH" failsafe_value="0" />
