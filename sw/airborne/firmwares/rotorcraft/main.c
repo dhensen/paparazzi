@@ -175,6 +175,9 @@ STATIC_INLINE void main_init( void ) {
   electrical_tid = sys_time_register_timer(0.1, NULL);
   baro_tid = sys_time_register_timer(1./BARO_PERIODIC_FREQUENCY, NULL);
   telemetry_tid = sys_time_register_timer((1./TELEMETRY_FREQUENCY), NULL);
+
+  // this is needed to fly without joystick
+  autopilot_on_rc_frame();
 }
 
 STATIC_INLINE void handle_periodic_tasks( void ) {
