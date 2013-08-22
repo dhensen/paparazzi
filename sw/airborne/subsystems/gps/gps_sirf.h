@@ -83,6 +83,20 @@ struct sirf_msg_2 {
   uint8_t ch12prn;
 } __attribute__ ((packed));
 
+/** OSP Message ID 4 from GPS. Total payload length should be 188 bytes. */
+struct sirf_msg_4 {
+  uint8_t msg_id;     ///< hex value 0x04 ( = decimal 4)
+  int16_t gps_week;   ///< GPS week number is reported modulo 1024 (ten LSBs only)
+  uint32_t gps_tow;   ///<
+  uint8_t chans;
+  struct {
+    uint8_t SVid;
+    uint8_t azimuth;
+    uint8_t elev;
+    uint8_t state[2];
+    uint8_t c_n0[10];
+  } channels[12];
+} __attribute__ ((packed));
 
 /** Message ID 41 from GPS. Total payload length should be 91 bytes. */
 struct sirf_msg_41 {

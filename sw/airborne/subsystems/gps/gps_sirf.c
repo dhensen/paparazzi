@@ -38,6 +38,7 @@
 
 struct GpsSirf gps_sirf;
 void sirf_parse_2(void);
+void sirf_parse_4(void);
 void sirf_parse_41(void);
 
 void gps_impl_init( void ) {
@@ -166,6 +167,25 @@ void sirf_parse_2(void) {
 
 }
 
+void sirf_parse_4(void) {
+  struct sirf_msg_4* p = (struct sirf_msg_4*)&gps_sirf.msg_buf[4];
+
+  gps.week = Invert2Bytes(p->gps_week);
+  gps.tow  = Invert4Bytes(p->gps_tow) * 10;  // divide by 100 to get seconds, then multiply by 1000 to get ms
+
+  gps.nb_channels = p->chans;
+
+  int i;
+  for(i = 0; i < gps.nb_channels; i++) {
+      gps.svinfos[i].svid = p->channels[i].SVid;
+      gps.svinfos[i].flags = p->channels[i].state[0];
+      gps.svinfos[i].cno = p->channels[i].c_n0[0];
+      gps.svinfos[i].elev = p->channels[i].elev;
+      gps.svinfos[i].azim = p->channels[i].azimuth;
+    }
+
+}
+
 void sirf_parse_msg(void) {
   //Set position available to false and check if it is a valid message
   gps_sirf.pos_available = FALSE;
@@ -179,8 +199,11 @@ void sirf_parse_msg(void) {
   //Check the message id and parse the message
   uint8_t message_id = gps_sirf.msg_buf[4];
   switch(message_id) {
-	case 0x29:
+  case 0x29:
       sirf_parse_41();
+      break;
+  case 0x04:
+      sirf_parse_4();
       break;
 	case 0x02:
       sirf_parse_2();
