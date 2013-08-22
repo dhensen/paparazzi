@@ -97,6 +97,7 @@ int start_time2 = 0;
 int ticks2 = 0;
 
 void sirf_parse_41(void) {
+  printf("Message 41 ontvangen\n");
   struct sirf_msg_41* p = (struct sirf_msg_41*)&gps_sirf.msg_buf[4];
 
   gps.tow = Invert4Bytes(p->tow);
@@ -142,6 +143,7 @@ void sirf_parse_41(void) {
 }
 
 void sirf_parse_2(void) {
+  printf("Message 2 ontvange!\n");
   struct sirf_msg_2* p = (struct sirf_msg_2*)&gps_sirf.msg_buf[4];
 
   gps.week = Invert2Bytes(p->week);
@@ -199,14 +201,18 @@ void sirf_parse_msg(void) {
   //Check the message id and parse the message
   uint8_t message_id = gps_sirf.msg_buf[4];
   switch(message_id) {
+  case 0x5C:
   case 0x29:
       sirf_parse_41();
       break;
   case 0x04:
       sirf_parse_4();
       break;
-	case 0x02:
+  case 0x02:
       sirf_parse_2();
+      break;
+  default:
+      printf("message id=%d\n", message_id);
       break;
   }
 

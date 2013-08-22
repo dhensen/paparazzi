@@ -31,5 +31,6 @@
 extern void gps_parrot_init(void);
 void gps_parrot_switch_to_sirf(void);
 void gps_parrot_switch_to_5hz(void);
+void gps_parrot_send_message(char *msg);
 
 #endif /* GPS_PARROT_H */

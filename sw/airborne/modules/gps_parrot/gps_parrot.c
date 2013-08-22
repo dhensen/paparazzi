@@ -27,8 +27,12 @@
 
 #include "gps_parrot.h"
 #include "mcu_periph/uart.h"
+#include "subsystems/gps/gps_sirf.h"
 #include <stdio.h>
 #include <string.h>
+
+#define GpsUartSend1(c) GpsLink(Transmit(c))
+#define GpsUartSetBaudrate(_a) GpsLink(SetBaudrate(_a))
 
 #define GpsParrotSwitchToSirf() gps_parrot_switch_to_sirf()
 
@@ -68,28 +72,27 @@ void gps_parrot_init(void)
   GpsParrotSwitchToSirf();
 
   // set baudrate 57600
-  UART1SetBaudrate(B57600);
+//  UART1SetBaudrate(B115200);
+  GpsUartSetBaudrate(B115200);
 }
 
 void gps_parrot_switch_to_5hz(void)
 {
   char msg[] = "$PSRF103,00,6,00,0*23\r\n";
-  int length = strlen(msg);
-  for (int i = 0; i < length; i++) {
-    UART1Transmit(msg[i]);
-    printf("[%X]\n", msg[i]);
-  }
-
+  gps_parrot_send_message(msg);
 }
 
 void gps_parrot_switch_to_sirf(void)
 {
   char msg[] = "$PSRF100,0,57600,8,1,0*37\r\n";
-  int length = strlen(msg);
-  for (int i = 0; i < length; i++) {
-    UART1Transmit(msg[i]);
-    printf("[%X]\n", msg[i]);
-  }
+  gps_parrot_send_message(msg);
+}
 
+void gps_parrot_send_message(char *msg)
+{
+  int length = strlen(msg);
+    for (int i = 0; i < length; i++) {
+      GpsUartSend1(msg[i]);
+    }
 }
 
