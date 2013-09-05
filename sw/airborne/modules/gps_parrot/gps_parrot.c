@@ -72,8 +72,8 @@ void gps_parrot_init(void)
   GpsParrotSwitchToSirf();
 
   // set baudrate 57600
-//  UART1SetBaudrate(B115200);
-  GpsUartSetBaudrate(B115200);
+//  UART1SetBaudrate(B57600);
+  GpsUartSetBaudrate(B57600);
 }
 
 void gps_parrot_switch_to_5hz(void)
